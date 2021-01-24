@@ -1,0 +1,7 @@
+.profile__description {
+  max-width: 336px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+}

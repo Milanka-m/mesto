@@ -1,0 +1,6 @@
+.profile__icon-edit {
+  padding: 7px;
+  background-image: url(../../../images/icon-button-edit.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+}

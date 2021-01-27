@@ -4,4 +4,20 @@
   border: 1px solid #fff;
   box-sizing: border-box;
   transform: translate(18px, 13px);
+  cursor: pointer;
+  background-color: transparent;
+}
+
+/* убрали стили по умолчанию для кнопки при нажатии */
+.profile__button-edit:active, .profile__button-edit:focus {
+  border-color: #71b7f0;
+  outline: none;
+}
+
+@media screen and (max-width: 520px) {
+  .profile__button-edit {
+    width: 18px;
+    height: 18px;
+    transform: translate(10px, 10px);
+  }
 }

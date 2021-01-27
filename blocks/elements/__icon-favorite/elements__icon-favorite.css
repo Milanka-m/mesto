@@ -1,0 +1,8 @@
+.elements__icon-favorite {
+  width: 22px;
+  height: 19px;
+  text-decoration: none;
+  margin: 0;
+  background-image: url(../../../images/icon-favorite-bord.svg);
+  background-size: cover;
+}

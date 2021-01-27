@@ -4,4 +4,26 @@
   border: 2px solid #fff;
   border-radius: 2px;
   box-sizing: border-box;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+/* убрали стили по умолчанию для кнопки при нажатии */
+.profile__button-add:active, .profile__button-add:focus {
+  border-color: #71b7f0;
+  outline: none;
+}
+
+@media screen and (min-width: 426px) and (max-width: 545px) {
+  .profile__button-add {
+    margin-top: 36px;
+    width: 68%;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .profile__button-add {
+    margin-top: 36px;
+    width: 100%;
+  }
 }

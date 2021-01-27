@@ -18,14 +18,82 @@
           <div class="profile__avatar"></div>
           <article class="profile__description">
             <h1 class="profile__title">Жак-Ив Кусто</h1>
-            <a href="#" class="profile__button-edit profile__icon-edit link" target="_self" rel="noopener"></a>
+            <button class="profile__button-edit profile__icon-edit link" type="button" aria-label="Редактировать профиль"></button>
             <p class="profile__subtitle">Исследователь океана</p>
           </article>
         </div>
-          <a href="#" class="profile__button-add profile__icon-add link" target="_self" rel="noopener"></a>
+          <button class="profile__button-add profile__icon-add link" type="button" aria-label="Добавить данные"></button>
+      </section>
+
+      <section class="elements">
+        <div class="elements__cards">
+          <div class="elements__card">
+            <div class="elements__card-image elements__card-image_hero_karachaevsk"></div>
+            <figcaption class="elements__label">
+              <h2 class="elements__heading">Карачаевск</h2>
+              <a href="#" class="elements__icon-favorite link" target="_self" rel="noopener"></a>
+            </figcaption>
+          </div>
+          <div class="elements__card">
+            <div class="elements__card-image elements__card-image_hero_mount-elbrus"></div>
+            <figcaption class="elements__label">
+              <h2 class="elements__heading">Гора Эльбрус</h2>
+              <a href="#" class="elements__icon-favorite link" target="_self" rel="noopener"></a>
+            </figcaption>
+          </div>
+          <div class="elements__card">
+            <div class="elements__card-image elements__card-image_hero_dombay"></div>
+            <figcaption class="elements__label">
+              <h2 class="elements__heading">Домбай</h2>
+              <a href="#" class="elements__icon-favorite link" target="_self" rel="noopener"></a>
+            </figcaption>
+          </div>
+          <div class="elements__card">
+            <div class="elements__card-image elements__card-image_hero_mount-elbrus"></div>
+            <figcaption class="elements__label">
+              <h2 class="elements__heading">Гора Эльбрус</h2>
+              <a href="#" class="elements__icon-favorite link" target="_self" rel="noopener"></a>
+            </figcaption>
+          </div>
+          <div class="elements__card">
+            <div class="elements__card-image elements__card-image_hero_dombay"></div>
+            <figcaption class="elements__label">
+              <h2 class="elements__heading">Домбай</h2>
+              <a href="#" class="elements__icon-favorite link" target="_self" rel="noopener"></a>
+            </figcaption>
+          </div>
+          <div class="elements__card">
+            <div class="elements__card-image elements__card-image_hero_karachaevsk"></div>
+            <figcaption class="elements__label">
+              <h2 class="elements__heading">Карачаево-Черкесия</h2>
+              <a href="#" class="elements__icon-favorite link" target="_self" rel="noopener"></a>
+            </figcaption>
+          </div>
+        </div>
       </section>
     </main>
-  </div>
+    <footer class="footer">
+      <p class="footer__copyright">&copy; 2020 Милана Бируля</p>
+    </footer>
 
+    <section class="popup">
+      <div class="popup__container">
+        <button class="popup__close link" type="button" aria-label="Закрыть попап"></button>
+        <form class="popup__form">
+          <div class="popup__form-container">
+            <h2 class="popup__form-title">Редактировать профиль</h2> 
+            <fieldset class="popup__form-input-container">
+              <input class="popup__form-item" type="text" name="name" id="name" value="Жак-Ив Кусто" required>
+              <input class="popup__form-item" type="text" name="about-me" id="about-me" value="Исследователь океана" required>
+            </fieldset>
+          </div>
+          <fieldset class="popup__form-handlers">
+            <input type="submit" class="popup__form-button link" value="Сохранить">
+          </fieldset>
+        </form>
+      </div>
+    </section>
+  </div>
+<script src="./scripts/main.js"></script>
 </body>
 </html>

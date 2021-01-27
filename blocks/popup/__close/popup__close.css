@@ -1,0 +1,33 @@
+.popup__close {
+  width: 40px;
+  padding-bottom: 40px;
+  background-image: url(../../../images/icon-close.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -12%;
+  left: 98%;
+  cursor: pointer;
+  border: none; /* обнулили стили для кнопки по умолчанию */
+  background-color: transparent;
+}
+/* убрали стили по умолчанию для кнопки при нажатии */
+.popup__close:active, .popup__close:focus {
+  border: none;
+  outline: none;
+}
+
+@media screen and (min-width: 426px) and (max-width: 500px) {
+  .popup__close {
+    top: -12%;
+    left: 92%;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .popup__close {
+    background-size: 26px auto;
+    top: -10%;
+    left: 94%;
+  }
+}

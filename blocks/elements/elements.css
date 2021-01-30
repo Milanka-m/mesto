@@ -1,3 +1,7 @@
 .elements {
-  margin: 51px 0 47px;
+  padding: 51px 0 47px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }

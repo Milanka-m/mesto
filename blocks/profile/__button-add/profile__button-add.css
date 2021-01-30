@@ -8,6 +8,10 @@
   background-color: transparent;
 }
 
+.profile__button-add:hover {
+  opacity: .6;
+}
+
 /* убрали стили по умолчанию для кнопки при нажатии */
 .profile__button-add:active, .profile__button-add:focus {
   border-color: #71b7f0;

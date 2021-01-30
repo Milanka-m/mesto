@@ -14,6 +14,10 @@
   background-color: #000;
 }
 
+.popup__form-button:hover {
+  opacity: .8;
+}
+
 @media screen and (max-width: 425px) {
   .popup__form-button {
     font-size: .9rem;

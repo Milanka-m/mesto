@@ -3,9 +3,14 @@
   height: 24px;
   border: 1px solid #fff;
   box-sizing: border-box;
-  transform: translate(18px, 13px);
+  margin-left: 18px;
+  margin-top: 13px;
   cursor: pointer;
   background-color: transparent;
+}
+
+.profile__button-edit:hover {
+  opacity: .6;
 }
 
 /* убрали стили по умолчанию для кнопки при нажатии */
@@ -18,6 +23,6 @@
   .profile__button-edit {
     width: 18px;
     height: 18px;
-    transform: translate(10px, 10px);
+    margin: 10px;
   }
 }

@@ -11,22 +11,11 @@ let overlay = document.querySelector('.popup');
 let popupOpenButton = document.querySelector('.profile__button-edit');
 let popupCloseButton = overlay.querySelector('.popup__close');
 
-// функция обработчик «отправки» формы
-function formSubmitHandler(evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы (можно указывать как e или evt или event)
-                                               
-    // Вставили новые значения полей с помощью textContent
-    profileTitle.textContent = nameInput.value;
-    profileSubtitle.textContent = jobInput.value;
-    // Вызываем функцию закрытия попапа
-    closePopup(evt);
-}
-
 //функция открытия попапа 
 function togglePopup() {
   // Передаем данные из профеля в поля формы
-  nameInput.value = 'Жак-Ив Кусто';
-  jobInput.value = 'Исследователь океана';
+  nameInput.value = profileTitle.textContent;
+  jobInput.value = profileSubtitle.textContent;
   // Добавляем класс (видимость попапа)
   overlay.classList.toggle('popup_opened');
 }
@@ -34,12 +23,22 @@ function togglePopup() {
 //функция закрытия попапа по оверлоу
 function closePopup(evt) {
   if (evt.target === evt.currentTarget) {
-    //В момент закрытия модального окна полям передается пустое значение
-    nameInput.value = '';
-    jobInput.value = '';
-    togglePopup();
+    //В момент закрытия модального окна полям ничего не передается
+    // Удаляем класс (видимость попапа)
+    overlay.classList.toggle('popup_opened');
   }
 } 
+
+// функция обработчик «отправки» формы
+function formSubmitHandler(evt) {
+  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы (можно указывать как e или evt или event)
+                                             
+  // Вставили новые значения полей с помощью textContent
+  profileTitle.textContent = nameInput.value;
+  profileSubtitle.textContent = jobInput.value;
+  // Вызываем функцию закрытия попапа
+  closePopup(evt);
+}
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»

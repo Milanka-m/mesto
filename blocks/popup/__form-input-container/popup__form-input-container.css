@@ -5,3 +5,9 @@
   padding-top: 34px;
   padding-bottom: 48px;
 }
+
+@media screen and (max-width: 425px) {
+  .popup__form-input-container {
+    padding-top: 48px;
+  }
+}

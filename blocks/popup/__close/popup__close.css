@@ -2,7 +2,7 @@
   width: 33px;
   padding-bottom: 33px;
   background-image: url(../../../images/icon-close.svg);
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   position: absolute;
   top: -12%;

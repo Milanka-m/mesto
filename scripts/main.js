@@ -1,15 +1,60 @@
 // Находим форму элементы DOM
-let formElement = document.querySelector('.popup__form');
+const formElement = document.querySelector('.popup__form');
 // Находим из формы значения полей
-let nameInput = formElement.querySelector('#name');
-let jobInput = formElement.querySelector('#about');
+const nameInput = formElement.querySelector('#name');
+const jobInput = formElement.querySelector('#about');
 // Выбираем элементы, куда должны быть вставлены значения полей
-let profileTitle = document.querySelector('.profile__title');
-let profileSubtitle = document.querySelector('.profile__subtitle');
+const profileTitle = document.querySelector('.profile__title');
+const profileSubtitle = document.querySelector('.profile__subtitle');
 // Находим попап, кнопки редактирования профиля и закрытия попапа
-let overlay = document.querySelector('.popup');
-let popupOpenButton = document.querySelector('.profile__button-edit');
-let popupCloseButton = overlay.querySelector('.popup__close');
+const overlay = document.querySelector('.popup');
+const popupOpenButton = document.querySelector('.profile__button-edit');
+const popupCloseButton = overlay.querySelector('.popup__close');
+
+const elementsCards = document.querySelector('.elements');
+
+const templateElement = document.querySelector('.template');
+// массив из 6-ти карточек которые должны отобразится на странице при загрузке
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
+function renderCards() {
+  const htmlCards = initialCards.map(getItem);
+  elementsCards.append(...htmlCards);
+}
+
+function getItem(item) {
+  const newItem = templateElement.content.cloneNode(true);
+  newItem.querySelector('.elements__card-image').src = item.link;
+  newItem.querySelector('.elements__heading').textContent = item.name;
+  return newItem;
+}
+
+renderCards();
 
 //функция открытия попапа 
 function togglePopup() {

@@ -65,27 +65,43 @@ function getItem(item) {
   const newItem = templateElement.content.cloneNode(true);
   newItem.querySelector('.elements__card-image').src = item.link;
   newItem.querySelector('.elements__heading').textContent = item.name;
+
+  // Находим кнопку "Удалить карточку"
+  const cardDeleteButton = newItem.querySelector('.elements__icon-delete');
+  //прикрепляем обработчик по клику на кнопку "Удалить карточку"
+  cardDeleteButton.addEventListener('click', cardDelete);
+
   return newItem;
 }
-// вызов функции
-renderCards();
 
-//функция открытия попапа
+//функция открытия попапа profile
 function togglePopup() {
   // Передаем данные из профеля в поля формы
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
   // Добавляем класс (видимость попапа)
   overlay.classList.toggle('popup_opened');
+}
+
+//функция открытия попапа card
+function togglePopupCard() {
+  // Добавляем класс (видимость попапа)
   popupCard.classList.toggle('popup-add-cards_opened');
 }
 
-//функция закрытия попапа по оверлоу
+//функция закрытия попапа profile по оверлоу
 function closePopup(evt) {
   if (evt.target === evt.currentTarget) {
     //В момент закрытия модального окна полям ничего не передается
     // Удаляем класс (видимость попапа)
     overlay.classList.toggle('popup_opened');
+  }
+} 
+
+//функция закрытия попапа card по клику на крестик
+function closePopupCard(evt) {
+  if (evt.target === evt.currentTarget) {
+    // Удаляем класс (видимость попапа)
     popupCard.classList.toggle('popup-add-cards_opened');
   }
 } 
@@ -109,10 +125,18 @@ function formSubmitAddCard(evt) {
   newCard.querySelector('.elements__card-image').src = linkInputCard.value;
   newCard.querySelector('.elements__heading').textContent = nameInputCard.value;
   // Вызываем функцию закрытия попапа
-  closePopup(evt);
+  closePopupCard(evt);
   // фунция возвращает вставку значений полей в начало блока elements
   return elementsCards.prepend(newCard);
+ 
 }
+
+function cardDelete(evt) {
+  const targetEl = evt.target;
+  const targetItem = targetEl.closest('.elements__card');
+  targetItem.remove();
+}
+
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
@@ -123,11 +147,14 @@ formElementCard.addEventListener('submit', formSubmitAddCard);
 popupOpenButton.addEventListener('click', togglePopup);
 
 //прикрепляем обработчик по клику на кнопку "Добавить данные"
-popupOpenButtonCard.addEventListener('click', togglePopup);
+popupOpenButtonCard.addEventListener('click', togglePopupCard);
 
 //прикрепляем обработчик по клику на кнопку "Закрыть попап"
 popupCloseButton.addEventListener('click', closePopup);
-popupCloseButtonCard.addEventListener('click', closePopup);
+popupCloseButtonCard.addEventListener('click', closePopupCard);
 
 //прикрепляем обработчик по клику на оверлоу
 overlay.addEventListener('mousedown', closePopup);
+
+// вызов функции
+renderCards();

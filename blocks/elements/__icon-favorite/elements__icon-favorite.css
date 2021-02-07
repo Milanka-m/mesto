@@ -15,7 +15,6 @@
 }
 
 .elements__icon-favorite:active, .elements__icon-favorite:focus {
-  background-image: url(../../../images/icon-favorite.svg);
   background-size: cover;
   outline: none;
 }

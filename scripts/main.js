@@ -54,26 +54,6 @@ const initialCards = [
   }
 ];
 
-// функция добавления карточек на страницу
-function renderCards() {
-  const htmlCards = initialCards.map(getItem);
-  elementsCards.append(...htmlCards);
-}
-
-// функция клонирования контента template контейнера
-function getItem(item) {
-  const newItem = templateElement.content.cloneNode(true);
-  newItem.querySelector('.elements__card-image').src = item.link;
-  newItem.querySelector('.elements__heading').textContent = item.name;
-
-  // Находим кнопку "Удалить карточку"
-  const cardDeleteButton = newItem.querySelector('.elements__icon-delete');
-  //прикрепляем обработчик по клику на кнопку "Удалить карточку"
-  cardDeleteButton.addEventListener('click', cardDelete);
-
-  return newItem;
-}
-
 //функция открытия попапа profile
 function togglePopup() {
   // Передаем данные из профеля в поля формы
@@ -83,26 +63,12 @@ function togglePopup() {
   overlay.classList.toggle('popup_opened');
 }
 
-//функция открытия попапа card
-function togglePopupCard() {
-  // Добавляем класс (видимость попапа)
-  popupCard.classList.toggle('popup-add-cards_opened');
-}
-
 //функция закрытия попапа profile по оверлоу
 function closePopup(evt) {
   if (evt.target === evt.currentTarget) {
     //В момент закрытия модального окна полям ничего не передается
     // Удаляем класс (видимость попапа)
     overlay.classList.toggle('popup_opened');
-  }
-} 
-
-//функция закрытия попапа card по клику на крестик
-function closePopupCard(evt) {
-  if (evt.target === evt.currentTarget) {
-    // Удаляем класс (видимость попапа)
-    popupCard.classList.toggle('popup-add-cards_opened');
   }
 } 
 
@@ -117,26 +83,77 @@ function formSubmitHandler(evt) {
   closePopup(evt);
 }
 
-// функция обработчик «отправки» формы card
-function formSubmitAddCard(evt) {
-  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы
-  // повторно клонируем template контейнер и присвоим его элементам полученные из формы значения полей
-  const newCard = templateElement.content.cloneNode(true);
-  newCard.querySelector('.elements__card-image').src = linkInputCard.value;
-  newCard.querySelector('.elements__heading').textContent = nameInputCard.value;
-  // Вызываем функцию закрытия попапа
-  closePopupCard(evt);
-  // фунция возвращает вставку значений полей в начало блока elements
-  return elementsCards.prepend(newCard);
- 
+// функция рендера карточек на странице
+function renderCards() {
+  const htmlCards = initialCards.map(getItem);
+  elementsCards.append(...htmlCards);
 }
 
+// вызов функции
+renderCards();
+
+// функция клонирования контента template контейнера
+function getItem(item) {
+  const newItem = templateElement.content.cloneNode(true);
+  newItem.querySelector('.elements__card-image').src = item.link;
+  newItem.querySelector('.elements__heading').textContent = item.name;
+
+  // Находим кнопку "Удалить карточку"
+  const cardDeleteButton = newItem.querySelector('.elements__icon-delete');
+  //прикрепляем обработчик по клику на кнопку "Удалить карточку"
+  cardDeleteButton.addEventListener('click', cardDelete);
+
+  // находим кнопку "Поставить лайк"
+  const iconFavoriteButton = newItem.querySelector('.elements__icon-favorite');
+  // прикрепляем обработчик по клику на кнопку "Поставить лайк"
+  iconFavoriteButton.addEventListener('click', cardFavorite);
+
+  return newItem;
+}
+
+//функция открытия попапа card
+function togglePopupCard() {
+  // Добавляем класс (видимость попапа)
+  popupCard.classList.toggle('popup-add-cards_opened');
+}
+
+//функция закрытия попапа card по клику на крестик
+function closePopupCard(evt) {
+  if (evt.target === evt.currentTarget) {
+    // Удаляем класс (видимость попапа)
+    popupCard.classList.toggle('popup-add-cards_opened');
+  }
+} 
+
+// функция обработчик «отправки» формы card (добавление карточки)
+function formSubmitAddCard(evt) {
+  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы
+  // передаем значение полей через форму
+  const inputNameCard = nameInputCard.value;
+  const inputLinkCard = linkInputCard.value;
+  // передаем функции template контейнера в качестве аргумента объекты со значениями полученными из полей формы
+  const cardElement = getItem({link: inputLinkCard, name: inputNameCard});
+  console.log(cardElement);
+  // передаем в начало блока elements новые карточки
+  elementsCards.prepend(cardElement);
+  // очищаем поля формы
+  nameInputCard.value = '';
+  linkInputCard.value = '';
+  // Вызываем функцию закрытия попапа
+  closePopupCard(evt);
+}
+
+// функция удаления карточки
 function cardDelete(evt) {
   const targetEl = evt.target;
   const targetItem = targetEl.closest('.elements__card');
   targetItem.remove();
 }
 
+// функция лайка карточки
+function cardFavorite(evt) {
+  evt.target.classList.toggle('elements__icon-favorite_active');
+}
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
@@ -155,6 +172,3 @@ popupCloseButtonCard.addEventListener('click', closePopupCard);
 
 //прикрепляем обработчик по клику на оверлоу
 overlay.addEventListener('mousedown', closePopup);
-
-// вызов функции
-renderCards();

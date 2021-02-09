@@ -10,7 +10,11 @@ const profileSubtitle = document.querySelector('.profile__subtitle');
 const overlay = document.querySelector('.popup');
 const popupOpenButton = document.querySelector('.profile__button-edit');
 const popupCloseButton = overlay.querySelector('.popup__close');
-
+// Находим попап картинки и его элементы
+const popupImage = document.querySelector('.popup-image');
+const popupCloseButtonImage = popupImage.querySelector('.popup-image__close');
+const popupImageIllustratoin = popupImage.querySelector('.popup-image__illustration');
+const popupImageCaption = popupImage.querySelector('.popup-image__caption');
 // Находим форму card
 const formElementCard = document.querySelector('.popup-add-cards__form');
 // Находим из формы card значение полей
@@ -95,8 +99,10 @@ renderCards();
 // функция клонирования контента template контейнера
 function getItem(item) {
   const newItem = templateElement.content.cloneNode(true);
-  newItem.querySelector('.elements__card-image').src = item.link;
-  newItem.querySelector('.elements__heading').textContent = item.name;
+  const newImageItem = newItem.querySelector('.elements__card-image');
+  newImageItem.src = item.link;
+  const newNameItem = newItem.querySelector('.elements__heading');
+  newNameItem.textContent = item.name;
 
   // Находим кнопку "Удалить карточку"
   const cardDeleteButton = newItem.querySelector('.elements__icon-delete');
@@ -107,6 +113,10 @@ function getItem(item) {
   const iconFavoriteButton = newItem.querySelector('.elements__icon-favorite');
   // прикрепляем обработчик по клику на кнопку "Поставить лайк"
   iconFavoriteButton.addEventListener('click', cardFavorite);
+
+  // вешаем обработчик на клик по картинке
+  const popupOpenButtonImage = newItem.querySelector('.elements__card-link');
+  popupOpenButtonImage.addEventListener('click', togglePopupImage);
 
   return newItem;
 }
@@ -133,7 +143,7 @@ function formSubmitAddCard(evt) {
   const inputLinkCard = linkInputCard.value;
   // передаем функции template контейнера в качестве аргумента объекты со значениями полученными из полей формы
   const cardElement = getItem({link: inputLinkCard, name: inputNameCard});
-  console.log(cardElement);
+ 
   // передаем в начало блока elements новые карточки
   elementsCards.prepend(cardElement);
   // очищаем поля формы
@@ -145,8 +155,8 @@ function formSubmitAddCard(evt) {
 
 // функция удаления карточки
 function cardDelete(evt) {
-  const targetEl = evt.target;
-  const targetItem = targetEl.closest('.elements__card');
+  const targetEl = evt.target; 
+  const targetItem = targetEl.closest('.elements__card'); // метод closest находит блежайшего родителя
   targetItem.remove();
 }
 
@@ -154,6 +164,23 @@ function cardDelete(evt) {
 function cardFavorite(evt) {
   evt.target.classList.toggle('elements__icon-favorite_active');
 }
+
+// функция открытия попапа с картинкой
+function togglePopupImage(evt) {
+  const targetElement = evt.target; 
+  const targetItemElement = targetElement.closest('.elements__card');
+  popupImageIllustratoin.src = targetItemElement.querySelector('.elements__card-image').src;
+  popupImageCaption.textContent = targetItemElement.querySelector('.elements__heading').textContent;
+  popupImage.classList.toggle('popup-image_opened');
+}
+
+//функция закрытия попапа c картинкой по клику на крестик
+function closePopupImage(evt) {
+  if (evt.target === evt.currentTarget) {
+    // Удаляем класс (видимость попапа)
+    popupImage.classList.toggle('popup-image_opened');
+  }
+} 
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
@@ -172,3 +199,6 @@ popupCloseButtonCard.addEventListener('click', closePopupCard);
 
 //прикрепляем обработчик по клику на оверлоу
 overlay.addEventListener('mousedown', closePopup);
+
+// прикрепляем обработчик по клику на кнопку "Закрыть попап" картинки
+popupCloseButtonImage.addEventListener('click', closePopupImage);

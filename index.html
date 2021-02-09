@@ -31,7 +31,7 @@
       <p class="footer__copyright">&copy; 2020 Милана Бируля</p>
     </footer>
 
-    <div class="popup">
+    <div class="popup emergence">
       <div class="popup__container">
         <button class="popup__close link" type="button" aria-label="Закрыть попап"></button>
         <form class="popup__form" name="profile">
@@ -66,11 +66,21 @@
         </form>
       </div>
     </div>
+
+    <div class="popup-image">
+      <div class="popup-image__container">
+        <button class="popup-image__close link" type="button" aria-label="Закрыть попап"></button>
+        <figure class="popup-image__figure">
+          <img class="popup-image__illustration" alt="Изображение">
+          <figcaption><p class="popup-image__caption"></p></figcaption>
+        </figure>
+      </div>
+    </div>
   </div>
 
   <template class="template">
     <article class="elements__card">
-      <img class="elements__card-image">
+      <a href="#" class="elements__card-link"><img class="elements__card-image" alt="Изображение"></a>
       <button class="elements__icon-delete link" type="button" aria-label="Удалить карточку"></button>
       <div class="elements__label">
         <h2 class="elements__heading"></h2>

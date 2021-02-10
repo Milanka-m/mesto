@@ -1,3 +1,5 @@
 .popup_opened {
-  display: flex;
+  /*свойства для плавного открытия и закрытия попапа*/
+  visibility: visible;
+  opacity: 1;
 }

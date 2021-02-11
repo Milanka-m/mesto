@@ -14,7 +14,7 @@ const popupCloseButtonProfile = popupProfile.querySelector('.popup__close');
 
 // Находим попап картинки и его элементы
 const popupImage = document.querySelector('.popup-image');
-const popupCloseButtonImage = popupImage.querySelector('.popup__close-image');
+const popupCloseButtonImage = popupImage.querySelector('.popup-image__close');
 const popupImageIllustratoin = popupImage.querySelector('.popup-image__illustration');
 const popupImageCaption = popupImage.querySelector('.popup-image__caption');
 // Находим форму card

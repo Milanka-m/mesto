@@ -31,7 +31,7 @@
       <p class="footer__copyright">&copy; 2020 Милана Бируля</p>
     </footer>
 
-    <div class="popup emergence">
+    <div class="popup">
       <div class="popup__container">
         <button class="popup__close link" type="button" aria-label="Закрыть попап"></button>
         <form class="popup__form" name="profile">
@@ -49,29 +49,29 @@
       </div>
     </div>
 
-    <div class="popup-add-cards">
-      <div class="popup-add-cards__container">
-        <button class="popup-add-cards__close link" type="button" aria-label="Закрыть попап"></button>
-        <form class="popup-add-cards__form" name="card">
-          <div class="popup-add-cards__form-container">
-            <h2 class="popup-add-cards__form-title">Новое место</h2> 
-            <fieldset class="popup-add-cards__form-input-container">
-              <input class="popup-add-cards__form-item" type="text" name="namecard" id="namecard" placeholder="Название" required>
-              <input class="popup-add-cards__form-item" type="text" name="linkcard" id="linkcard" placeholder="Ссылка на картинку" required>
+    <div class="popup popup-add-cards">
+      <div class="popup__container">
+        <button class="popup__close popup__close-add-cards link" type="button" aria-label="Закрыть попап"></button>
+        <form class="popup__form popup__form-add-cards" name="card">
+          <div class="popup__form-container">
+            <h2 class="popup__form-title">Новое место</h2> 
+            <fieldset class="popup__form-input-container">
+              <input class="popup__form-item" type="text" name="namecard" id="namecard" placeholder="Название" required>
+              <input class="popup__form-item" type="text" name="linkcard" id="linkcard" placeholder="Ссылка на картинку" required>
             </fieldset>
           </div>
-          <fieldset class="popup-add-cards__form-handlers">
-            <input type="submit" class="popup-add-cards__form-button link" value="Сохранить">
+          <fieldset class="popup__form-handlers">
+            <input type="submit" class="popup__form-button link" value="Сохранить">
           </fieldset>
         </form>
       </div>
-    </div>
+    </div> 
 
     <div class="popup-image">
       <div class="popup-image__container">
-        <button class="popup-image__close link" type="button" aria-label="Закрыть попап"></button>
+        <button class="popup__close popup__close-image link" type="button" aria-label="Закрыть попап"></button>
         <figure class="popup-image__figure">
-          <img class="popup-image__illustration" alt="Изображение">
+          <img class="popup-image__illustration" src="" alt="Изображение">
           <figcaption><p class="popup-image__caption"></p></figcaption>
         </figure>
       </div>

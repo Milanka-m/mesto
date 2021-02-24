@@ -4,10 +4,12 @@ const popupOpenButtonProfile = document.querySelector('.profile__button-edit');
 // Находим из попапа profile кнопку "Закрыть попап" 
 const popupCloseButtonProfile = popupProfile.querySelector('.popup-profile-close');
 // Находим форму profile
-const profileForm = popupProfile.querySelector('.popup-profile-form');
+const profileForm = document.forms.profile;
 // Находим из формы значения полей
-const nameInput = profileForm.querySelector('#name');
-const jobInput = profileForm.querySelector('#about');
+const nameInput = profileForm.elements.name;
+const jobInput = profileForm.elements.about;
+// Находим кнопку сабмита формы profile
+const profileFormButton = profileForm.querySelector('.popup-profile-form-button');
 // Выбираем элементы, куда должны быть вставлены значения полей
 const profileTitle = document.querySelector('.profile__title');
 const profileSubtitle = document.querySelector('.profile__subtitle');
@@ -22,11 +24,14 @@ const popupImageCaption = popupImage.querySelector('.popup-image__caption');
 const popupCard = document.querySelector('.popup-add-cards');
 const popupOpenButtonCard = document.querySelector('.profile__button-add');
 const popupCloseButtonCard = popupCard.querySelector('.popup-add-cards-close');
+
 // Находим форму card
-const formElementCard = popupCard.querySelector('.popup-add-cards-form');
+const formElementCard = document.forms.card;
 // Находим из формы card значение полей
-const nameInputCard = formElementCard.querySelector('#namecard');
-const linkInputCard = formElementCard.querySelector('#linkcard');
+const nameInputCard = formElementCard.elements.namecard;
+const linkInputCard = formElementCard.elements.linkcard;
+// Находим кнопку сабмита формы card
+const formElementCardButton = formElementCard.querySelector('.popup-add-cards-form-button');
 
 // Находим блок для вставки карточек
 const elementsCards = document.querySelector('.elements');
@@ -82,7 +87,7 @@ function formSubmitHandler(evt) {
   profileSubtitle.textContent = jobInput.value;
   // Вызываем функцию закрытия попапа (попап profile в качестве аргумента)
   closePopup(popupProfile);
-}
+} 
 
 // функция рендера карточек на странице
 function renderCards() {
@@ -126,8 +131,7 @@ function formSubmitAddCard(evt) {
   // передаем в начало блока elements новые карточки
   elementsCards.prepend(cardElement);
   // очищаем поля формы
-  nameInputCard.value = '';
-  linkInputCard.value = '';
+  formElementCard.reset();
   // Вызываем функцию закрытия попапа
   closePopup(popupCard);
 }
@@ -153,6 +157,7 @@ function openPopupImage(item) {
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
+
 profileForm.addEventListener('submit', formSubmitHandler);
 formElementCard.addEventListener('submit', formSubmitAddCard);
 

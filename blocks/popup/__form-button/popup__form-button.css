@@ -18,6 +18,17 @@
   opacity: .8;
 }
 
+.popup__form-button:disabled {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .2);
+  color: rgba(0, 0, 0, .2);
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 @media screen and (max-width: 425px) {
   .popup__form-button {
     font-size: .9rem;

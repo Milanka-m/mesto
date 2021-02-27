@@ -38,16 +38,20 @@
           <div class="popup__form-container">
             <h2 class="popup__form-title">Редактировать профиль</h2> 
             <fieldset class="popup__form-input-container">
-              <input class="popup__form-input" type="text" name="name" id="name" placeholder="Имя" 
-              minlength="2" maxlength="40" required>
-              <span class="popup__form-input-error" id="name-error"></span>
-              <input class="popup__form-input" type="text" name="about" id="about" placeholder="О себе" 
-              minlength="2" maxlength="200" required>
-              <span class="popup__form-input-error" id="about-error"></span>
+              <section class="popup__form-section">
+                <input class="popup__form-input" type="text" name="name" id="name" placeholder="Имя" 
+                minlength="2" maxlength="40" required>
+                <span class="popup__form-input-error" id="name-error"></span>
+              </section>
+              <section class="popup__form-section">
+                <input class="popup__form-input" type="text" name="about" id="about" placeholder="О себе" 
+                minlength="2" maxlength="200" required>
+                <span class="popup__form-input-error" id="about-error"></span>
+              </section>
             </fieldset>
           </div>
           <fieldset class="popup__form-handlers">
-            <input type="submit" class="popup__form-button" value="Сохранить">
+            <button type="submit" class="popup__form-button">Сохранить</button>
           </fieldset>
         </form>
       </div>
@@ -60,15 +64,19 @@
           <div class="popup__form-container">
             <h2 class="popup__form-title">Новое место</h2> 
             <fieldset class="popup__form-input-container">
-              <input class="popup__form-input" type="text" name="namecard" id="namecard" placeholder="Название" 
-              minlength="2" maxlength="30" required>
-              <span class="popup__form-input-error" id="namecard-error"></span>
-              <input class="popup__form-input" type="url" name="linkcard" id="linkcard" placeholder="Ссылка на картинку" required>
-              <span class="popup__form-input-error" id="linkcard-error"></span>
+              <section class="popup__form-section">
+                <input class="popup__form-input" type="text" name="namecard" id="namecard" placeholder="Название" 
+                minlength="2" maxlength="30" required>
+                <span class="popup__form-input-error" id="namecard-error"></span>
+              </section>
+              <section class="popup__form-section">
+                <input class="popup__form-input" type="url" name="linkcard" id="linkcard" placeholder="Ссылка на картинку" required>
+                <span class="popup__form-input-error" id="linkcard-error"></span>
+              </section>
             </fieldset>
           </div>
           <fieldset class="popup__form-handlers">
-            <input type="submit" class="popup__form-button link" value="Создать">
+            <button type="submit" class="popup__form-button link">Создать</button>
           </fieldset>
         </form>
       </div>

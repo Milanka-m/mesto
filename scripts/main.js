@@ -1,3 +1,7 @@
+// находим все попапы на странице
+const popupElements = document.querySelectorAll('.popup');
+// получаем массив из попапов
+const popupElementList = Array.from(popupElements);
 // Находим попап profile, кнопки редактирования профиля и закрытия попапа
 const popupProfile = document.querySelector('.popup-profile');
 const popupOpenButtonProfile = document.querySelector('.profile__button-edit');
@@ -70,6 +74,9 @@ const initialCards = [
 function openPopup(popupEl) {
   // Добавляем класс (видимость попапа)
   popupEl.classList.add('popup_opened');
+  // добавляем на страницу слушатель на клавишу Esc, которая вызывает закрытие попапа
+  document.addEventListener('keydown', (evt) => closePopupEsc(evt, popupEl));
+  popupEl.addEventListener('mousedown', (evt) => closePopupOverlay(evt, popupEl));
 }
 
 
@@ -77,10 +84,41 @@ function openPopup(popupEl) {
 function closePopup(element) {
   // Удаляем класс (видимость попапа)
   element.classList.remove('popup_opened');
+  // добавляем слушатель нажатия клавиши на страницу, передаем функцию колбэк закрытия попапа нажатием клавиши Esc
+  document.removeEventListener('keydown', (evt) => closePopupEsc(evt, element));
+  // добавляем слушатель элементу попапа, передаем функцию колбэк закрытия попапа кликом вне попапа
+  element.removeEventListener('mousedown', (evt) => closePopupOverlay(evt, element));
+} 
+
+
+//функция закрытия попапа нажатием клавиши Esc
+function closePopupEsc(evt, popupElement) {
+  // если нажата кнопка Esc 
+  if (evt.key === "Esc") {
+    // обойдем все элементы полученной коллекции попапов
+    popupElementList.forEach( (popupElement) => {
+      // удаляем класс (видимость попапа) 
+      popupElement.classList.remove('popup_opened');
+    });
+  }
+}
+
+//функция закрытия попапа по оверлоу 
+function closePopupOverlay(evt, popupElement) { 
+  // если кликнули в любом месте вне попапа
+  if (evt.target === evt.currentTarget) {
+    // обойдем все элементы полученной коллекции попапов
+    popupElementList.forEach( (popupElement) => {
+      // удаляем класс (видимость попапа) 
+      popupElement.classList.remove('popup_opened');
+    });
+  }
 } 
 
 // функция обработчик «отправки» формы profile
 function formSubmitHandler(evt) {
+  checkInputValidity(formElement, inputElement, inputErrorClass, errorClass);
+  toggleButtonState(inputList, buttonElement, inactiveButtonClass);
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы (можно указывать как e или evt или event)                                       
   // Вставили новые значения полей с помощью textContent
   profileTitle.textContent = nameInput.value;
@@ -122,6 +160,8 @@ function getItem(item) {
 
 // функция обработчик «отправки» формы card (добавление карточки)
 function formSubmitAddCard(evt) {
+  checkInputValidity(formElement, inputElement, inputErrorClass, errorClass);
+  toggleButtonState(inputList, buttonElement, inactiveButtonClass);
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы
   // передаем значение полей через форму
   const inputNameCard = nameInputCard.value;
@@ -130,7 +170,6 @@ function formSubmitAddCard(evt) {
   const cardElement = getItem({link: inputLinkCard, name: inputNameCard});
   // передаем в начало блока elements новые карточки
   elementsCards.prepend(cardElement);
-  // очищаем поля формы
   formElementCard.reset();
   // Вызываем функцию закрытия попапа
   closePopup(popupCard);
@@ -157,7 +196,6 @@ function openPopupImage(item) {
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
-
 profileForm.addEventListener('submit', formSubmitHandler);
 formElementCard.addEventListener('submit', formSubmitAddCard);
 
@@ -166,7 +204,8 @@ formElementCard.addEventListener('submit', formSubmitAddCard);
 popupOpenButtonProfile.addEventListener('click', () => { 
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
- openPopup(popupProfile)});
+  openPopup(popupProfile);
+});
 
 //прикрепляем обработчик по клику на кнопку "Добавить данные"
 popupOpenButtonCard.addEventListener('click', () => {openPopup(popupCard)});

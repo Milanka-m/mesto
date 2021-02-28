@@ -71,25 +71,38 @@ const initialCards = [
 ];
 
 //функция открытия попапа profile, card, image
-function openPopup(popupEl) {
+function openPopup(popupEl, {formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}) {
+  // Добавляем класс (видимость попапа)
+  popupEl.classList.add('popup_opened');
+  // находим форму
+  const formElement = popupEl.querySelector(formSelector);
+  // находим все поля внутри формы
+  // сделаем из них массив методом Array.from
+  const inputList = Array.from(popupEl.querySelectorAll(inputSelector));
+  // находим кнопку сабмита формы
+  const buttonElement = popupEl.querySelector(submitButtonSelector);
+  // обойдем все элементы полученной коллекции 
+  inputList.forEach((inputElement) => {
+    // скроем все ошибки при открытии попапа
+    hideInputError(formElement, inputElement, inputErrorClass, errorClass);
+    });
+  toggleButtonState(inputList, buttonElement, inactiveButtonClass);
   // Добавляем класс (видимость попапа)
   popupEl.classList.add('popup_opened');
   // добавляем на страницу слушатель на клавишу Esc, которая вызывает закрытие попапа
-  document.addEventListener('keydown', (evt) => closePopupEsc(evt, popupEl));
-  popupEl.addEventListener('mousedown', (evt) => closePopupOverlay(evt, popupEl));
-}
-
+  document.addEventListener('keydown', closePopupEsc);
+  popupEl.addEventListener('mousedown', closePopupOverlay);
+  }
 
 //функция закрытия попапа profile, card, image
 function closePopup(element) {
   // Удаляем класс (видимость попапа)
   element.classList.remove('popup_opened');
-  // добавляем слушатель нажатия клавиши на страницу, передаем функцию колбэк закрытия попапа нажатием клавиши Esc
-  document.removeEventListener('keydown', (evt) => closePopupEsc(evt, element));
-  // добавляем слушатель элементу попапа, передаем функцию колбэк закрытия попапа кликом вне попапа
-  element.removeEventListener('mousedown', (evt) => closePopupOverlay(evt, element));
+  // удаляем слушатель нажатия клавиши на страницу, передаем функцию колбэк закрытия попапа нажатием клавиши Esc
+  document.removeEventListener('keydown', closePopupEsc);
+  // удаляем слушатель элементу попапа, передаем функцию колбэк закрытия попапа кликом вне попапа
+  element.removeEventListener('mousedown', closePopupOverlay);
 } 
-
 
 //функция закрытия попапа нажатием клавиши Esc
 function closePopupEsc(evt, popupElement) {
@@ -198,14 +211,13 @@ formElementCard.addEventListener('submit', formSubmitAddCard);
 // прикрепляем обработчик по клику на кнопку "Редактировать профиль" 
 // передаем в качестве аргумента колбек функцию передачи данных из профеля в поля формы при открытии попапа profile
 popupOpenButtonProfile.addEventListener('click', () => { 
+  openPopup(popupProfile, validationConfig);
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
-  openPopup(popupProfile);
 });
 
 //прикрепляем обработчик по клику на кнопку "Добавить данные"
-popupOpenButtonCard.addEventListener('click', () => {openPopup(popupCard)});
-
+popupOpenButtonCard.addEventListener('click', () => {openPopup(popupCard, validationConfig)});
 //прикрепляем обработчик по клику на кнопку "Закрыть попап" для троих попапов
 popupCloseButtonProfile.addEventListener('click', () => {closePopup(popupProfile)});
 popupCloseButtonCard.addEventListener('click', () => {closePopup(popupCard)});

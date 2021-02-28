@@ -1,3 +1,11 @@
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__form-input',
+  submitButtonSelector: '.popup__form-button',
+  inactiveButtonClass: 'popup__form-button_inactive',
+  inputErrorClass: 'popup__form-input-type-error',
+  errorClass: 'popup__form-input-error_active'
+};
 // функция, которая добавляет класс с ошибкой
 const showInputError = (formElement, inputElement, inputErrorClass, errorClass, errorMessage) => {
   // находим элемент ошибки по уникальному классу поля ввода, к которому она относится 
@@ -76,7 +84,7 @@ const hasInvalidInput = (inputList) => {
   });
 };
 
-//функция, которая дизактивирует кнопку сабмита если поле не валидно и наоборот 
+//функция, которая диактивирует кнопку сабмита если поле не валидно и наоборот 
 const toggleButtonState = (inputList, buttonElement, inactiveButtonClass) => {
   const findAtLeastOneNotValid = (inputElement) => !inputElement.validity.valid;
   const hasNotValidInput = inputList.some(findAtLeastOneNotValid);
@@ -138,13 +146,6 @@ const enableValidation = ({
 // включение валидации вызовом enableValidation
 // все настройки передаются при вызове в качестве аргументов
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__form-input',
-  submitButtonSelector: '.popup__form-button',
-  inactiveButtonClass: 'popup__form-button_inactive',
-  inputErrorClass: 'popup__form-input-type-error',
-  errorClass: 'popup__form-input-error_active'
-}); 
+enableValidation(validationConfig); 
 
  

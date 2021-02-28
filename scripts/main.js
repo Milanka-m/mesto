@@ -94,11 +94,11 @@ function closePopup(element) {
 //функция закрытия попапа нажатием клавиши Esc
 function closePopupEsc(evt, popupElement) {
   // если нажата кнопка Esc 
-  if (evt.key === "Esc") {
+  if (evt.keyCode === 27) {
     // обойдем все элементы полученной коллекции попапов
     popupElementList.forEach( (popupElement) => {
-      // удаляем класс (видимость попапа) 
-      popupElement.classList.remove('popup_opened');
+    // удаляем класс (видимость попапа) 
+    popupElement.classList.remove('popup_opened');
     });
   }
 }
@@ -109,16 +109,14 @@ function closePopupOverlay(evt, popupElement) {
   if (evt.target === evt.currentTarget) {
     // обойдем все элементы полученной коллекции попапов
     popupElementList.forEach( (popupElement) => {
-      // удаляем класс (видимость попапа) 
-      popupElement.classList.remove('popup_opened');
+    // удаляем класс (видимость попапа) 
+    popupElement.classList.remove('popup_opened');
     });
   }
 } 
 
 // функция обработчик «отправки» формы profile
 function formSubmitHandler(evt) {
-  checkInputValidity(formElement, inputElement, inputErrorClass, errorClass);
-  toggleButtonState(inputList, buttonElement, inactiveButtonClass);
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы (можно указывать как e или evt или event)                                       
   // Вставили новые значения полей с помощью textContent
   profileTitle.textContent = nameInput.value;
@@ -160,8 +158,6 @@ function getItem(item) {
 
 // функция обработчик «отправки» формы card (добавление карточки)
 function formSubmitAddCard(evt) {
-  checkInputValidity(formElement, inputElement, inputErrorClass, errorClass);
-  toggleButtonState(inputList, buttonElement, inactiveButtonClass);
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы
   // передаем значение полей через форму
   const inputNameCard = nameInputCard.value;

@@ -223,6 +223,8 @@ popupOpenButtonProfile.addEventListener('click', () => {
 popupOpenButtonCard.addEventListener('click', () => {
   // вызываем функцию очистки полей от ошибки
   clearError(popupCard, validationConfig);
+  // очищаем поля формы
+  formElementCard.reset();
   openPopup(popupCard);
 });
 //прикрепляем обработчик по клику на кнопку "Закрыть попап" для троих попапов

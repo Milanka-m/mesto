@@ -70,29 +70,33 @@ const initialCards = [
   }
 ];
 
-//функция открытия попапа profile, card, image
-function openPopup(popupEl, {formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}) {
-  // Добавляем класс (видимость попапа)
-  popupEl.classList.add('popup_opened');
+// функция, которая очищает ошибки полей формы
+function clearError(popupElement, {formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}) {
   // находим форму
-  const formElement = popupEl.querySelector(formSelector);
+  const formElement = popupElement.querySelector(formSelector);
   // находим все поля внутри формы
   // сделаем из них массив методом Array.from
-  const inputList = Array.from(popupEl.querySelectorAll(inputSelector));
+  const inputList = Array.from(popupElement.querySelectorAll(inputSelector));
   // находим кнопку сабмита формы
-  const buttonElement = popupEl.querySelector(submitButtonSelector);
+  const buttonElement = popupElement.querySelector(submitButtonSelector);
   // обойдем все элементы полученной коллекции 
   inputList.forEach((inputElement) => {
     // скроем все ошибки при открытии попапа
     hideInputError(formElement, inputElement, inputErrorClass, errorClass);
     });
   toggleButtonState(inputList, buttonElement, inactiveButtonClass);
+}
+
+  //функция открытия попапа profile, card, image
+function openPopup(popupEl) {
   // Добавляем класс (видимость попапа)
   popupEl.classList.add('popup_opened');
-  // добавляем на страницу слушатель на клавишу Esc, которая вызывает закрытие попапа
+  // добавляем на страницу слушатель события нажатия на клавишу Esc, который вызывает закрытие попапа
   document.addEventListener('keydown', closePopupEsc);
+  // добавляем на попап слушатель события нажатия на мышь
   popupEl.addEventListener('mousedown', closePopupOverlay);
   }
+
 
 //функция закрытия попапа profile, card, image
 function closePopup(element) {
@@ -105,26 +109,23 @@ function closePopup(element) {
 } 
 
 //функция закрытия попапа нажатием клавиши Esc
-function closePopupEsc(evt, popupElement) {
+function closePopupEsc(evt) {
   // если нажата кнопка Esc 
-  if (evt.keyCode === 27) {
-    // обойдем все элементы полученной коллекции попапов
-    popupElementList.forEach( (popupElement) => {
-    // удаляем класс (видимость попапа) 
-    popupElement.classList.remove('popup_opened');
-    });
+  if (evt.key === "Escape") {
+    // находим открытый попап
+    const popupOpened = document.querySelector('.popup_opened');
+    // вызываем функцию закрытия попапа
+    closePopup(popupOpened);
   }
 }
 
 //функция закрытия попапа по оверлоу 
-function closePopupOverlay(evt, popupElement) { 
+//evt.target - это и есть наш открытый попап, так как он показывает элемент, на который был навешен обработчик
+function closePopupOverlay(evt) { 
   // если кликнули в любом месте вне попапа
   if (evt.target === evt.currentTarget) {
-    // обойдем все элементы полученной коллекции попапов
-    popupElementList.forEach( (popupElement) => {
-    // удаляем класс (видимость попапа) 
-    popupElement.classList.remove('popup_opened');
-    });
+    // закрываем открытый попап
+    closePopup(evt.target); 
   }
 } 
 
@@ -211,13 +212,19 @@ formElementCard.addEventListener('submit', formSubmitAddCard);
 // прикрепляем обработчик по клику на кнопку "Редактировать профиль" 
 // передаем в качестве аргумента колбек функцию передачи данных из профеля в поля формы при открытии попапа profile
 popupOpenButtonProfile.addEventListener('click', () => { 
-  openPopup(popupProfile, validationConfig);
+  // вызываем функцию очистки полей от ошибки
+  clearError(popupProfile, validationConfig);
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
+  openPopup(popupProfile);
 });
 
 //прикрепляем обработчик по клику на кнопку "Добавить данные"
-popupOpenButtonCard.addEventListener('click', () => {openPopup(popupCard, validationConfig)});
+popupOpenButtonCard.addEventListener('click', () => {
+  // вызываем функцию очистки полей от ошибки
+  clearError(popupCard, validationConfig);
+  openPopup(popupCard);
+});
 //прикрепляем обработчик по клику на кнопку "Закрыть попап" для троих попапов
 popupCloseButtonProfile.addEventListener('click', () => {closePopup(popupProfile)});
 popupCloseButtonCard.addEventListener('click', () => {closePopup(popupCard)});

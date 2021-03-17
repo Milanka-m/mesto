@@ -8,10 +8,10 @@ const validationConfig = {
 };
 // функция, которая добавляет класс с ошибкой
 const showInputError = (formElement, inputElement, inputErrorClass, errorClass, errorMessage) => {
-  // находим элемент ошибки по уникальному классу поля ввода, к которому она относится 
+  // находим элемент ошибки по уникальному индикатору поля ввода, к которому она относится 
   // находим элемент ошибки с применением шаблонных строк (id поля + class спэна)
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
-  // добавляем полю класс подсветки валидации
+  // добавляем полю класс подсветки поля при ошибке (красная линия)
   inputElement.classList.add(inputErrorClass);
   // заменим содержимое span с ошибкой на переданный параметр
   errorElement.textContent = errorMessage;
@@ -21,9 +21,11 @@ const showInputError = (formElement, inputElement, inputErrorClass, errorClass, 
 
 // функция которая удаляет класс с ошибкой
 const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) => {
-  // находим элемент ошибки по уникальному классу поля ввода, к которому она относится 
+  // находим элемент ошибки по уникальному индикатору поля ввода, к которому она относится 
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+  // удаляем класс подсветки поля с ошибкой
   inputElement.classList.remove(inputErrorClass);
+  // удаляем класс ошибки
   errorElement.classList.remove(errorClass);
   // очистим ошибку
   errorElement.textContent = '';
@@ -72,7 +74,7 @@ const checkInputValidity = (formElement, inputElement, inputErrorClass, errorCla
 	// если поле не проходит валидацию, покажем ошибку
     showInputError(formElement, inputElement, inputErrorClass, errorClass, errorMessage);
   } else {
-	// если проходит скроем 
+	// если проходит скроем ошибку
     hideInputError(formElement, inputElement, inputErrorClass, errorClass);
   }
 };
@@ -99,7 +101,6 @@ const toggleButtonState = (inputList, buttonElement, inactiveButtonClass) => {
 };
 
 // слушатель событий добавим всем полям ввода внутри формы
-// функция принимает параметром элемент формы
 const setEventListeners = (formElement, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass) => {
   // находим все поля внутри формы
   // сделаем из них массив методом Array.from
@@ -116,7 +117,7 @@ const setEventListeners = (formElement, inputSelector, submitButtonSelector, ina
     // каждому полю добавим обработчик события input, который проверяет валидность поля
      inputElement.addEventListener('input', function () {
      // внутри колбэка вызовим функцию которая проверяет валидность поля на каждый ввод символа
-       // передав ей форму и проверяемый элемент и элементы ошибок
+       // передав ей форму, проверяемое поле и элементы ошибок
        checkInputValidity(formElement, inputElement, inputErrorClass, errorClass);
        // такой вызов проверит состояние кнопки при каждом изменении символа в любом из полей
        toggleButtonState(inputList, buttonElement, inactiveButtonClass);
@@ -125,7 +126,7 @@ const setEventListeners = (formElement, inputSelector, submitButtonSelector, ina
  };
 
 
-// функция валидации всех форм которая находит и перебирает все формы в DOM (на странице)
+// функция валидации всех форм которая находит и перебирает все формы в DOM
 const enableValidation = ({
   formSelector, 
   inputSelector, 
@@ -136,7 +137,7 @@ const enableValidation = ({
 }) => {
 	// находим массив всех элементов с классом form 
   const formList = Array.from(document.querySelectorAll(formSelector));
-  // передаем массиву обработчик с параметром formElement
+  // для каждого поля из полученной коллекции вызовим функцию, которая слушает событие input для каждого введенного символа в поле
   formList.forEach((formElement) => {
     setEventListeners(formElement, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass);
   });
@@ -144,8 +145,7 @@ const enableValidation = ({
 
 
 // включение валидации вызовом enableValidation
-// все настройки передаются при вызове в качестве аргументов
-
+// все настройки передаются при вызове в качестве аргументов (передан объект со свойствами)
 enableValidation(validationConfig); 
 
  

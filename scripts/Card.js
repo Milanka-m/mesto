@@ -84,6 +84,7 @@ function clearError(popupElement, {formSelector, inputSelector, submitButtonSele
     // скроем все ошибки при открытии попапа
     hideInputError(formElement, inputElement, inputErrorClass, errorClass);
     });
+    
   toggleButtonState(inputList, buttonElement, inactiveButtonClass);
 }
 
@@ -214,6 +215,7 @@ formElementCard.addEventListener('submit', formSubmitAddCard);
 popupOpenButtonProfile.addEventListener('click', () => { 
   // вызываем функцию очистки полей от ошибки
   clearError(popupProfile, validationConfig);
+  // вставляем значение полей из блока профайл
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
   openPopup(popupProfile);

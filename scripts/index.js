@@ -27,6 +27,11 @@ const linkInputCard = formElementCard.elements.linkcard;
 // Находим блок для вставки карточек
 const elementsCards = document.querySelector('.elements');
 
+// Находим попап картинки и его элементы
+const popupImage = document.querySelector('.popup-image');
+const popupCloseButtonImage = popupImage.querySelector('.popup-image-close');
+const popupImageIllustratoin = popupImage.querySelector('.popup-image__illustration');
+const popupImageCaption = popupImage.querySelector('.popup-image__caption');
 
 // массив из 6-ти карточек которые должны отобразится на странице при загрузке
 const initialCards = [
@@ -64,21 +69,28 @@ const validationConfig = {
   errorClass: 'popup__form-input-error_active' 
 }; 
 
-import { popupImage, popupCloseButtonImage, popupImageIllustratoin, popupImageCaption, Card } from "./Card.js"
-import formValidator from "./FormValidator.js";
+import Card from "./Card.js"
+import FormValidator from "./FormValidator.js";
 
+// функция создания новой карточки
+const createCard = (item) => {
+  const card = new Card(item, '.template', handleCardClick);
+  const htmlCard = card.generateCard();
+  return htmlCard;
+}
+// для каждой карточки из массива карточек вызовим функцию создания новой карточки
 initialCards.forEach((item) => {
-  const card = new Card(item, '.template');
-  const htmlCards = card.generateCard();
+  const htmlCards = createCard(item);
+  // вставим карточки в elementsCards
   elementsCards.append(htmlCards);
-}); 
+});
 
-const formProfile = new formValidator(validationConfig, profileForm);
+const formProfile = new FormValidator(validationConfig, profileForm);
 formProfile.enableValidation();
-const formCard = new formValidator(validationConfig, formElementCard);
+const formCard = new FormValidator(validationConfig, formElementCard);
 formCard.enableValidation();
 
-  //функция открытия попапа profile, card, image
+//функция открытия попапа profile, card
 function openPopup(popupEl) {
   // Добавляем класс (видимость попапа)
   popupEl.classList.add('popup_opened');
@@ -88,7 +100,14 @@ function openPopup(popupEl) {
   popupEl.addEventListener('mousedown', closePopupOverlay);
   }
 
-//функция закрытия попапа profile, card, image
+  // функция открытия попапа с картинкой
+function handleCardClick(name, link) {
+  popupImageIllustratoin.src = link;
+  popupImageCaption.textContent = name;
+  openPopup(popupImage);
+}
+
+  //функция закрытия попапа profile, card, image
 function closePopup(element) {
   // Удаляем класс (видимость попапа)
   element.classList.remove('popup_opened');
@@ -135,9 +154,14 @@ function formSubmitAddCard(evt) {
   // передаем значение полей через форму
   const inputNameCard = nameInputCard.value;
   const inputLinkCard = linkInputCard.value;
-  const cardElement = new Card({link: inputLinkCard, name: inputNameCard}, '.template');
+  const newCard = {
+    link: inputLinkCard,
+    name: inputNameCard
+  }
+  // создаем новую карточку
+  const cardElement = createCard(newCard);
   // передаем в начало блока elements новые карточки
-  elementsCards.prepend(cardElement.generateCard());
+  elementsCards.prepend(cardElement);
   formElementCard.reset();
   // Вызываем функцию закрытия попапа
   closePopup(popupCard);
@@ -170,5 +194,4 @@ popupOpenButtonCard.addEventListener('click', () => {
 //прикрепляем обработчик по клику на кнопку "Закрыть попап" для троих попапов
 popupCloseButtonProfile.addEventListener('click', () => {closePopup(popupProfile)});
 popupCloseButtonCard.addEventListener('click', () => {closePopup(popupCard)});
-
-
+popupCloseButtonImage.addEventListener('click', () => {closePopup(popupImage)}); 

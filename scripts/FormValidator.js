@@ -1,4 +1,4 @@
-export default class formValidator {
+export default class FormValidator {
   constructor(data, formElement) {
     this._inputSelector = data.inputSelector;
     this._submitButtonSelector = data.submitButtonSelector;
@@ -124,7 +124,7 @@ export default class formValidator {
 
    // функция валидации всех форм которая находит и перебирает все формы в DOM (на странице) 
   enableValidation() { 
-    this._setEventListeners(this._formElement, this._inputSelector, this._inactiveButtonClass, this._inputErrorClass, this._errorClass, this._formElement);
+    this._setEventListeners();
   }
 
 }

@@ -1,8 +1,7 @@
 // Находим попап profile, кнопки редактирования профиля и закрытия попапа
-const popupProfile = document.querySelector('.popup-profile');
+const popupProfile = '.popup-profile';
 const popupOpenButtonProfile = document.querySelector('.profile__button-edit');
-// Находим из попапа profile кнопку "Закрыть попап" 
-const popupCloseButtonProfile = popupProfile.querySelector('.popup-profile-close');
+
 // Находим форму profile
 const profileForm = document.forms.profile;
 // Находим из формы значения полей
@@ -14,9 +13,8 @@ const profileTitle = document.querySelector('.profile__title');
 const profileSubtitle = document.querySelector('.profile__subtitle');
 
 // Находим попап card, кнопки добавления карточки и закрытия попапа
-const popupCard = document.querySelector('.popup-add-cards');
+const popupCard = '.popup-add-cards';
 const popupOpenButtonCard = document.querySelector('.profile__button-add');
-const popupCloseButtonCard = popupCard.querySelector('.popup-add-cards-close');
 
 // Находим форму card
 const formElementCard = document.forms.card;
@@ -25,13 +23,13 @@ const nameInputCard = formElementCard.elements.namecard;
 const linkInputCard = formElementCard.elements.linkcard;
 
 // Находим блок для вставки карточек
-const elementsCards = document.querySelector('.elements');
+const elementsCards = '.elements';
 
 // Находим попап картинки и его элементы
-const popupImage = document.querySelector('.popup-image');
-const popupCloseButtonImage = popupImage.querySelector('.popup-image-close');
-const popupImageIllustratoin = popupImage.querySelector('.popup-image__illustration');
-const popupImageCaption = popupImage.querySelector('.popup-image__caption');
+const popupImage = '.popup-image';
+
+const popupImageIllustratoin = document.querySelector('.popup-image__illustration');
+const popupImageCaption = document.querySelector('.popup-image__caption');
 
 // массив из 6-ти карточек которые должны отобразится на странице при загрузке
 const initialCards = [
@@ -71,6 +69,12 @@ const validationConfig = {
 
 import Card from "./Card.js"
 import FormValidator from "./FormValidator.js";
+import Section from "./Section.js";
+import Popup from "./Popup.js";
+import UserInfo from "./UserInfo.js"
+import PopupWithForm from "./PopupWithForm.js";
+import PopupWithImage from "./PopupWithImage.js";
+
 
 // функция создания новой карточки
 const createCard = (item) => {
@@ -78,99 +82,57 @@ const createCard = (item) => {
   const htmlCard = card.generateCard();
   return htmlCard;
 }
-// для каждой карточки из массива карточек вызовим функцию создания новой карточки
-initialCards.forEach((item) => {
-  const htmlCards = createCard(item);
-  // вставим карточки в elementsCards
-  elementsCards.append(htmlCards);
-});
 
+// создаем экземпляр класса Section, передаем первым параметром массив карточек
+// и функцию-колбэк renderer которая получает разметку карточки и вставляет её в контейнер
+const cardsList = new Section({ items: initialCards, renderer: (item) => {
+    const cardElement = createCard(item);
+    // вставляем полученный элемент в разметку
+    cardsList.addItem(cardElement);} }, elementsCards);
+
+    cardsList.renderItems();
+
+// создаем экземпляры класса FormValidator
 const formProfile = new FormValidator(validationConfig, profileForm);
 formProfile.enableValidation();
 const formCard = new FormValidator(validationConfig, formElementCard);
 formCard.enableValidation();
 
-//функция открытия попапа profile, card
-function openPopup(popupEl) {
-  // Добавляем класс (видимость попапа)
-  popupEl.classList.add('popup_opened');
-  // добавляем на страницу слушатель события нажатия на клавишу Esc, который вызывает закрытие попапа
-  document.addEventListener('keydown', closePopupEsc);
-  // добавляем на попап слушатель события нажатия на мышь
-  popupEl.addEventListener('mousedown', closePopupOverlay);
-  }
+// создаем экземпляры класса PopupWithImage
+const imagePopup = new PopupWithImage(popupImage);
 
-  // функция открытия попапа с картинкой
-function handleCardClick(name, link) {
-  popupImageIllustratoin.src = link;
-  popupImageCaption.textContent = name;
-  openPopup(popupImage);
+// функция открытия попапа с картинкой
+function handleCardClick(link, name) {
+  imagePopup.open(link, name);
+  imagePopup.setEventListeners();
 }
 
-  //функция закрытия попапа profile, card, image
-function closePopup(element) {
-  // Удаляем класс (видимость попапа)
-  element.classList.remove('popup_opened');
-  // удаляем слушатель нажатия клавиши на страницу, передаем функцию колбэк закрытия попапа нажатием клавиши Esc
-  document.removeEventListener('keydown', closePopupEsc);
-  // удаляем слушатель элементу попапа, передаем функцию колбэк закрытия попапа кликом вне попапа
-  element.removeEventListener('mousedown', closePopupOverlay);
-} 
+// создаем экземпляр класса UserInfo
+const userInfo = new UserInfo({ nameSelector: profileTitle, aboutSelector: profileSubtitle });
 
-//функция закрытия попапа нажатием клавиши Esc
-function closePopupEsc(evt) {
-  // если нажата кнопка Esc 
-  if (evt.key === "Escape") {
-    // находим открытый попап
-    const popupOpened = document.querySelector('.popup_opened');
-    // вызываем функцию закрытия попапа
-    closePopup(popupOpened);
-  }
-}
+// создаем экземпляр класса PopupWithForm
+const profilePopup = new PopupWithForm({ formSubmitHandler: (evt) => {
+  evt.preventDefault();
+  userInfo.setUserInfo(nameInput, jobInput);
+  profilePopup.close();
+  
+} }, popupProfile);
 
-//функция закрытия попапа по оверлей
-//evt.target - это и есть наш открытый попап, так как он показывает элемент, на который был навешен обработчик
-function closePopupOverlay(evt) { 
-  // если кликнули в любом месте вне попапа
-  if (evt.target === evt.currentTarget) {
-    // закрываем открытый попап
-    closePopup(evt.target); 
-  }
-} 
-
-// функция обработчик «отправки» формы profile
-function formSubmitHandler(evt) {
-  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы (можно указывать как e или evt или event)                                       
-  // Вставили новые значения полей с помощью textContent
-  profileTitle.textContent = nameInput.value;
-  profileSubtitle.textContent = jobInput.value;
-  // Вызываем функцию закрытия попапа (попап profile в качестве аргумента)
-  closePopup(popupProfile);
-} 
-
-// функция обработчик «отправки» формы card (добавление карточки)
-function formSubmitAddCard(evt) {
-  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы
-  // передаем значение полей через форму
+// создаем экземпляр класса PopupWithForm
+const cardPopup = new PopupWithForm({ formSubmitHandler: (evt) => {
+  evt.preventDefault();
   const inputNameCard = nameInputCard.value;
   const inputLinkCard = linkInputCard.value;
   const newCard = {
     link: inputLinkCard,
     name: inputNameCard
   }
-  // создаем новую карточку
-  const cardElement = createCard(newCard);
-  // передаем в начало блока elements новые карточки
-  elementsCards.prepend(cardElement);
-  formElementCard.reset();
-  // Вызываем функцию закрытия попапа
-  closePopup(popupCard);
-}
+  const cardImage = createCard(newCard);
+  const containerElements = document.querySelector(elementsCards);
+  containerElements.prepend(cardImage);
+  cardPopup.close();
+} }, popupCard);
 
-// Прикрепляем обработчик к форме:
-// он будет следить за событием “submit” - «отправка»
-profileForm.addEventListener('submit', formSubmitHandler);
-formElementCard.addEventListener('submit', formSubmitAddCard);
 
 // прикрепляем обработчик по клику на кнопку "Редактировать профиль" 
 // передаем в качестве аргумента колбек функцию передачи данных из профеля в поля формы при открытии попапа profile
@@ -178,20 +140,18 @@ popupOpenButtonProfile.addEventListener('click', () => {
   // вызываем публичный метод очистки полей от ошибки
   formProfile.clearError();
   // вставляем значение полей из блока профайл
-  nameInput.value = profileTitle.textContent;
-  jobInput.value = profileSubtitle.textContent;
-  openPopup(popupProfile);
+  userInfo.getUserInfo(nameInput, jobInput);
+  profilePopup.open();
 });
 
 //прикрепляем обработчик по клику на кнопку "Добавить данные"
 popupOpenButtonCard.addEventListener('click', () => {
   // вызываем публичный метод очистки полей от ошибки
   formCard.clearError();
-  // очищаем поля формы
-  formElementCard.reset();
-  openPopup(popupCard);
+  cardPopup.open();
 });
-//прикрепляем обработчик по клику на кнопку "Закрыть попап" для троих попапов
-popupCloseButtonProfile.addEventListener('click', () => {closePopup(popupProfile)});
-popupCloseButtonCard.addEventListener('click', () => {closePopup(popupCard)});
-popupCloseButtonImage.addEventListener('click', () => {closePopup(popupImage)}); 
+
+// вызываем публичный метод закрытия попапа по иконке и сабмита формы
+profilePopup.setEventListeners();
+cardPopup.setEventListeners();
+imagePopup.setEventListeners();

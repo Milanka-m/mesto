@@ -29,7 +29,7 @@ export default class Card {
   // приватный метод обработки событий
   _setEventListeners() {
     this._element.querySelector('.elements__card-link').addEventListener('click', () => {
-      this._handleCardClick(this._name, this._link);
+      this._handleCardClick(this._link, this._name);
     });
 
     this._element.querySelector('.elements__icon-delete').addEventListener('click', () => {

@@ -1,3 +1,5 @@
+import './index.css'; // добавили импорт главного файла стилей 
+
 import { popupProfile, 
   popupOpenButtonProfile, 
   profileForm, 

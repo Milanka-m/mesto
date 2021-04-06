@@ -1,6 +1,9 @@
 export default class Popup {
   constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
+    // привязали функцию к контексту this в конструкторе 1 раз с помощью bind
+    this._handleEscClose = this._handleEscClose.bind(this);
+    this._handleOverlayClose = this._handleOverlayClose.bind(this);
   }
   
   // публичный метод открытия попапа
@@ -20,11 +23,9 @@ export default class Popup {
   // приватный метод, который содержит логику закрытия попапа клавишей Esc
   _handleEscClose(evt) {
     // если нажата кнопка Esc 
-  if (evt.key === "Escape") {
-  // находим открытый попап
-    const popupOpened = document.querySelector('.popup_opened');
-    // закрываем открытый попап
-    popupOpened.classList.remove('popup_opened');
+    if (evt.key === "Escape") {
+      // закрываем открытый попап
+      this.close();
     }
   }
 
@@ -33,7 +34,7 @@ export default class Popup {
     // если кликнули в любом месте вне попапа
     if (evt.target === evt.currentTarget) {
       // закрываем открытый попап
-      evt.target.classList.remove('popup_opened');
+      this.close();
     }
   }
 

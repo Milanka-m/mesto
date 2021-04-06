@@ -9,8 +9,8 @@ export const nameInput = profileForm.elements.name;
 export const jobInput = profileForm.elements.about;
 
 // Выбираем элементы, куда должны быть вставлены значения полей
-export const profileTitle = document.querySelector('.profile__title');
-export const profileSubtitle = document.querySelector('.profile__subtitle');
+export const profileTitle = '.profile__title';
+export const profileSubtitle = '.profile__subtitle';
 
 // Находим попап card, кнопки добавления карточки и закрытия попапа
 export const popupCard = '.popup-add-cards';
@@ -18,9 +18,6 @@ export const popupOpenButtonCard = document.querySelector('.profile__button-add'
 
 // Находим форму card
 export const formElementCard = document.forms.card;
-// Находим из формы card значение полей
-export const nameInputCard = formElementCard.elements.namecard;
-export const linkInputCard = formElementCard.elements.linkcard;
 
 // Находим блок для вставки карточек
 export const elementsCards = '.elements';

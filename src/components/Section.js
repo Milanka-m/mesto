@@ -10,6 +10,10 @@ export default class Section {
     this._container.append(element);
   }
 
+  prependItem(element) {
+    this._container.prepend(element);
+  }
+
   // публичный метод рендера каждого элемента из массива элементов на страницу
   renderItems() {
     this._items.forEach(item => {

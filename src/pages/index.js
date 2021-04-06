@@ -10,8 +10,6 @@ import { popupProfile,
   popupCard, 
   popupOpenButtonCard, 
   formElementCard, 
-  nameInputCard, 
-  linkInputCard, 
   elementsCards, 
   popupImage, 
   initialCards, 
@@ -48,47 +46,44 @@ formCard.enableValidation();
 
 // создаем экземпляры класса PopupWithImage
 const imagePopup = new PopupWithImage(popupImage);
+imagePopup.setEventListeners();
 
 // функция открытия попапа с картинкой
 function handleCardClick(link, name) {
   imagePopup.open(link, name);
-  imagePopup.setEventListeners();
 }
 
 // создаем экземпляр класса UserInfo
 const userInfo = new UserInfo({ nameSelector: profileTitle, aboutSelector: profileSubtitle });
 
 // создаем экземпляр класса PopupWithForm
-const profilePopup = new PopupWithForm({ formSubmitHandler: (evt) => {
-  evt.preventDefault();
-  userInfo.setUserInfo(nameInput, jobInput);
-  profilePopup.close();
-  
-} }, popupProfile);
+const profilePopup = new PopupWithForm(popupProfile, (inputValues) => {
+  userInfo.setUserInfo(inputValues);
+});
+profilePopup.setEventListeners();
+
 
 // создаем экземпляр класса PopupWithForm
-const cardPopup = new PopupWithForm({ formSubmitHandler: (evt) => {
-  evt.preventDefault();
-  const inputNameCard = nameInputCard.value;
-  const inputLinkCard = linkInputCard.value;
+const cardPopup = new PopupWithForm(popupCard, (inputValues) => {
+ const inputNameCard = inputValues.namecard;
+  const inputLinkCard = inputValues.linkcard;
   const newCard = {
     link: inputLinkCard,
     name: inputNameCard
-  }
+  } 
   const cardImage = createCard(newCard);
-  const containerElements = document.querySelector(elementsCards);
-  containerElements.prepend(cardImage);
-  cardPopup.close();
-} }, popupCard);
-
+  cardsList.prependItem(cardImage);
+});
+cardPopup.setEventListeners();
 
 // прикрепляем обработчик по клику на кнопку "Редактировать профиль" 
 // передаем в качестве аргумента колбек функцию передачи данных из профеля в поля формы при открытии попапа profile
 popupOpenButtonProfile.addEventListener('click', () => { 
   // вызываем публичный метод очистки полей от ошибки
   formProfile.clearError();
-  // вставляем значение полей из блока профайл
-  userInfo.getUserInfo(nameInput, jobInput);
+  const userData = userInfo.getUserInfo();
+  nameInput.value = userData.nameUser;
+  jobInput.value = userData.aboutUser; 
   profilePopup.open();
 });
 
@@ -98,8 +93,3 @@ popupOpenButtonCard.addEventListener('click', () => {
   formCard.clearError();
   cardPopup.open();
 });
-
-// вызываем публичный метод закрытия попапа по иконке и сабмита формы
-profilePopup.setEventListeners();
-cardPopup.setEventListeners();
-imagePopup.setEventListeners();

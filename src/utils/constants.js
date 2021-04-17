@@ -8,7 +8,7 @@ export const profileForm = document.forms.profile;
 export const nameInput = profileForm.elements.name;
 export const jobInput = profileForm.elements.about;
 
-// Выбираем элементы, куда должны быть вставлены значения полей
+export const profileAvatar = '.profile__avatar';
 export const profileTitle = '.profile__title';
 export const profileSubtitle = '.profile__subtitle';
 
@@ -25,33 +25,10 @@ export const elementsCards = '.elements';
 // Находим попап картинки и его элементы
 export const popupImage = '.popup-image';
 
-// массив из 6-ти карточек которые должны отобразится на странице при загрузке
-export const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+// Находим попап удаления карточки
+export const popupRemoveCards = '.popup-remove-cards';
+// находим template контейнер
+export const cardSelector = '.template';
 
 export const validationConfig = { 
   inputSelector: '.popup__form-input', 

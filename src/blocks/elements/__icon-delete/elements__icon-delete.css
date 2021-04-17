@@ -1,4 +1,5 @@
 .elements__icon-delete {
+  display: none;
   width: 18px;
   height: 19.3px;
   text-decoration: none;

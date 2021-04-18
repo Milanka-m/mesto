@@ -11,10 +11,17 @@ export const jobInput = profileForm.elements.about;
 export const profileAvatar = '.profile__avatar';
 export const profileTitle = '.profile__title';
 export const profileSubtitle = '.profile__subtitle';
+export const profileEditButtonAvatar = document.querySelector('.profile__button-avatar');
 
 // Находим попап card, кнопки добавления карточки и закрытия попапа
 export const popupCard = '.popup-add-cards';
 export const popupOpenButtonCard = document.querySelector('.profile__button-add');
+
+//находим попап редактирования аватара
+export const popupAvatar = '.popup-profile-avatar';
+
+//находим форму avatar
+export const avatarForm = document.forms.avatar;
 
 // Находим форму card
 export const formElementCard = document.forms.card;

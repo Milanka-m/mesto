@@ -13,6 +13,10 @@ export default class UserInfo {
     return userInfoContent;
   }
 
+  getAvatarInfo(data) {
+    return { link: data.link }
+  }
+
   // публичный метод, который принимает новые данные пользователя и добавляет их на страницу
   setUserInfo(data) {
     this._nameSelector.textContent = data.name;
@@ -23,4 +27,7 @@ export default class UserInfo {
     this._avatarSelector.src = data.avatar;
   }
 
+  renderAvatar(data) {
+    this._avatarSelector.src = data.link;
+  }
 }

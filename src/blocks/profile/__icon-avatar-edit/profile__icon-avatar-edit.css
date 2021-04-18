@@ -1,0 +1,7 @@
+.profile__icon-avatar-edit:hover {
+  background-image: url(../../../images/icon-avatar-edit.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(0, 0, 0, .8);
+  transition: background-color 1s linear;
+}

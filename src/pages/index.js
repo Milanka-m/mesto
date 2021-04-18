@@ -7,7 +7,10 @@ import { popupProfile,
   jobInput, 
   profileAvatar,
   profileTitle, 
-  profileSubtitle, 
+  profileSubtitle,
+  profileEditButtonAvatar,
+  popupAvatar,
+  avatarForm, 
   popupCard, 
   popupOpenButtonCard, 
   formElementCard, 
@@ -16,6 +19,8 @@ import { popupProfile,
   popupRemoveCards,
   cardSelector, 
   validationConfig } from "../utils/constants.js";
+
+import { buttonLoadingSubmit } from "../utils/utils.js";
   
 import Card from "../components/Card.js"
 import FormValidator from "../components/FormValidator.js";
@@ -101,7 +106,6 @@ submitPopup.setEventListeners();
 
 // создаем экземпляр класса UserInfo
 const userInfo = new UserInfo({ avatarSelector: profileAvatar, nameSelector: profileTitle, aboutSelector: profileSubtitle });
-
 api.getUsers()
   .then((users) => {
     console.log(users);
@@ -117,6 +121,8 @@ const formProfile = new FormValidator(validationConfig, profileForm);
 formProfile.enableValidation();
 const formCard = new FormValidator(validationConfig, formElementCard);
 formCard.enableValidation();
+const formAvatar = new FormValidator(validationConfig, avatarForm);
+formAvatar.enableValidation();
 
 // создаем экземпляры класса PopupWithImage
 const imagePopup = new PopupWithImage(popupImage);
@@ -129,16 +135,38 @@ function handleCardClick(link, name) {
 
 // создаем экземпляр класса PopupWithForm
 const profilePopup = new PopupWithForm(popupProfile, (data) => {
+  buttonLoadingSubmit(true);
   api.editUser(data)
-    .then((data) => {
+    .then(() => {
       userInfo.setUserInfo(data);
     })
     .catch((err) => {
       console.log(err);
     })
+    .finally(() => {
+      buttonLoadingSubmit(false);
+      profilePopup.close();
+    })
 });
 profilePopup.setEventListeners();
 
+// создаем экземпляр класса PopupWithForm для редактирования аватара
+const avatarPopup = new PopupWithForm(popupAvatar, (data) => {
+  buttonLoadingSubmit(true);
+  api.editAvatar(data)
+    .then(() => {
+      const avatarInfo = userInfo.getAvatarInfo(data);
+      userInfo.renderAvatar(avatarInfo);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      buttonLoadingSubmit(false);
+      avatarPopup.close();
+    })
+});
+avatarPopup.setEventListeners();
 
 // создаем экземпляр класса PopupWithForm (новую карточку)
 const cardPopup = new PopupWithForm(popupCard, (data) => {
@@ -148,6 +176,7 @@ const cardPopup = new PopupWithForm(popupCard, (data) => {
     link: inputLinkCard, 
     name: inputNameCard 
   }  
+  buttonLoadingSubmit(true);
   api.addCard(newCard)
     .then((newCard) => {
       const cardImage = createCard(newCard);
@@ -155,6 +184,10 @@ const cardPopup = new PopupWithForm(popupCard, (data) => {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      buttonLoadingSubmit(false);
+      cardPopup.close();
     })
 });
 cardPopup.setEventListeners();
@@ -175,4 +208,11 @@ popupOpenButtonCard.addEventListener('click', () => {
   // вызываем публичный метод очистки полей от ошибки
   formCard.clearError();
   cardPopup.open();
+});
+
+//прикрепляем обработчик по клику на кнопку "Редактировать аватар"
+profileEditButtonAvatar.addEventListener('click', () => {
+  // вызываем публичный метод очистки полей от ошибки
+  formAvatar.clearError();
+  avatarPopup.open();
 });

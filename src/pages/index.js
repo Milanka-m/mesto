@@ -19,8 +19,6 @@ import { popupProfile,
   popupRemoveCards,
   cardSelector, 
   validationConfig } from "../utils/constants.js";
-
-import { buttonLoadingSubmit } from "../utils/utils.js";
   
 import Card from "../components/Card.js"
 import FormValidator from "../components/FormValidator.js";
@@ -37,6 +35,8 @@ const api = new Api({
   groupID: 'cohort-22'
 });
 
+let currentUserId;
+
 // функция создания новой карточки
 const createCard = (data) => {
   const card = new Card({
@@ -46,6 +46,7 @@ const createCard = (data) => {
         api.removeCard(card.getId())
         .then(() => {
           card.removeCard();
+          submitPopup.close();
         })
         .catch((err) => {
           console.log(err);
@@ -53,27 +54,25 @@ const createCard = (data) => {
       })
       submitPopup.open();
     },
-    nandleLikeButtonClick: () => {
+    handleLikeButtonClick: () => {
       api.addLikeCard(card.getId())
         .then((data) => {
-          const likeLenght = card.updateLikes(data);
-          card.updateLikesVie(likeLenght);
+          card.updateLikes(data);
         })
         .catch((err) => {
           console.log(err);
         })
     },
-    nandleDislikeButtonClick: () => {
+    handleDislikeButtonClick: () => {
       api.removeLikeCard(card.getId())
       .then((data) => {
-        const likeLenght = card.updateLikes(data);
-        card.updateLikesVie(likeLenght);
+        card.updateLikes(data);
       })
       .catch((err) => {
         console.log(err);
       })
     }
-  }, cardSelector, handleCardClick);
+  }, currentUserId, cardSelector, handleCardClick);
 
   return card.generateCard();
 } 
@@ -84,9 +83,23 @@ const cardsList = new Section({
     renderer: (data) => {
       const cardElement = createCard(data);
       // вставляем полученный элемент в разметку
-      cardsList.addItem(cardElement);
+      cardsList.appendItem(cardElement);
     } 
   }, elementsCards);
+
+// создаем экземпляр класса UserInfo
+const userInfo = new UserInfo({ avatarSelector: profileAvatar, nameSelector: profileTitle, aboutSelector: profileSubtitle });
+
+api.getUsers()
+  .then((users) => {
+    console.log(users);
+    userInfo.setUserInfo(users);
+    userInfo.setUserAvatar(users);
+    currentUserId = users._id;
+  })
+  .catch((err) => {
+    console.log(err);
+  })
 
 // если ответ положительный, получаем с сервера карточки, которые появляются при загрузке страницы
 api.getCards()
@@ -103,18 +116,6 @@ const submitPopup = new PopupWithFormSubmit(popupRemoveCards, () => {
   card.removeCard();
 });
 submitPopup.setEventListeners();
-
-// создаем экземпляр класса UserInfo
-const userInfo = new UserInfo({ avatarSelector: profileAvatar, nameSelector: profileTitle, aboutSelector: profileSubtitle });
-api.getUsers()
-  .then((users) => {
-    console.log(users);
-    userInfo.setUserInfo(users);
-    userInfo.setUserAvatar(users);
-  })
-  .catch((err) => {
-    console.log(err);
-  })
 
 // создаем экземпляры класса FormValidator
 const formProfile = new FormValidator(validationConfig, profileForm);
@@ -135,35 +136,35 @@ function handleCardClick(link, name) {
 
 // создаем экземпляр класса PopupWithForm
 const profilePopup = new PopupWithForm(popupProfile, (data) => {
-  buttonLoadingSubmit(true);
+  profilePopup.buttonLoading(true);
   api.editUser(data)
     .then(() => {
       userInfo.setUserInfo(data);
+      profilePopup.close();
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
-      buttonLoadingSubmit(false);
-      profilePopup.close();
+      profilePopup.buttonLoading(false);
     })
 });
 profilePopup.setEventListeners();
 
 // создаем экземпляр класса PopupWithForm для редактирования аватара
 const avatarPopup = new PopupWithForm(popupAvatar, (data) => {
-  buttonLoadingSubmit(true);
+  avatarPopup.buttonLoading(true);
   api.editAvatar(data)
     .then(() => {
       const avatarInfo = userInfo.getAvatarInfo(data);
       userInfo.renderAvatar(avatarInfo);
+      avatarPopup.close();
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
-      buttonLoadingSubmit(false);
-      avatarPopup.close();
+      avatarPopup.buttonLoading(false);
     })
 });
 avatarPopup.setEventListeners();
@@ -176,19 +177,19 @@ const cardPopup = new PopupWithForm(popupCard, (data) => {
     link: inputLinkCard, 
     name: inputNameCard 
   }  
-  buttonLoadingSubmit(true);
+  cardPopup.buttonLoading(true);
   api.addCard(newCard)
     .then((newCard) => {
       const cardImage = createCard(newCard);
       cardsList.prependItem(cardImage);
+      cardPopup.close();
     })
     .catch((err) => {
       console.log(err);
     })
-    .finally(() => {
-      buttonLoadingSubmit(false);
-      cardPopup.close();
-    })
+     .finally(() => {
+      cardPopup.buttonLoading(false);
+    }) 
 });
 cardPopup.setEventListeners();
 

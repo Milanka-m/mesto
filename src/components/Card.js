@@ -1,16 +1,17 @@
 export default class Card {
-  constructor({ data, handleDeleteButtonClick, nandleLikeButtonClick, nandleDislikeButtonClick }, cardSelector, handleCardClick) {
+  constructor({ data, handleDeleteButtonClick, handleLikeButtonClick, handleDislikeButtonClick }, myId, cardSelector, handleCardClick) {
     this._name = data.name;
     this._link = data.link;
-    this._likes = data.likes;
+    this._likesCount = data.likes;
     this._id = data._id;
-    this._myId = '91adc96fec2731ded62f009d';
+    this._myId = myId;
     this._ownerId = data.owner._id;
     this._handleDeleteButtonClick = handleDeleteButtonClick;
-    this._nandleLikeButtonClick = nandleLikeButtonClick;
-    this._nandleDislikeButtonClick = nandleDislikeButtonClick;
+    this._handleLikeButtonClick = handleLikeButtonClick;
+    this._handleDislikeButtonClick = handleDislikeButtonClick;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
+    /* this._iconFavoriteElement = this._element.querySelector('.elements__icon-favorite') */
   }
   // приватный метод клонирования template контейнера
   _getTemplate() {
@@ -21,6 +22,10 @@ export default class Card {
     .cloneNode(true);
 
     return cardElement;
+  }
+
+  _getElement() {
+
   }
 
   _getIconeRemove() {
@@ -37,38 +42,39 @@ export default class Card {
 
   // приватный метод лайка карточки
   _addActiveLike() {
-    this._element.querySelector('.elements__icon-favorite').classList.add('elements__icon-favorite_active');
+    this._favoriteEl.classList.add('elements__icon-favorite_active');
   }
 
   _removeActiveLike() {
-    this._element.querySelector('.elements__icon-favorite').classList.remove('elements__icon-favorite_active');
+    this._favoriteEl.classList.remove('elements__icon-favorite_active');
   }
 
   // метод возвращает количество лайков
   _cardLikeNumber() {
-    this._likeNumber.textContent = this._likes.length;
+    this._likeNumber.textContent = this._likesCount.length;
   }
 
   // метод проверяет есть ли мой лайк в массиве лайков
   _isMyLike() {
-    return Boolean(this._likes.find(el => el._id === this._myId));
+    return Boolean(this._likesCount.find(el => el._id === this._myId));
   }
   
-  updateLikesVie(likeLenght) {
+  _updateLikesView() {
     if(this._isMyLike()) {
       this._addActiveLike();
-      likeLenght += 1;
+     /*  likeLenght += 1; */
       this._cardLikeNumber();
     } else {
       this._removeActiveLike();
-      likeLenght -= 1;
+      /* likeLenght -= 1; */
       this._cardLikeNumber();
     }
   } 
 
   updateLikes(data) {
-    this._likes = data.likes;
-    return this._likes.length;
+    this._likesCount = data.likes;
+    this._updateLikesView();
+    /* return this._likesCount.length; */
   } 
  
   // приватный метод обработки событий
@@ -81,11 +87,11 @@ export default class Card {
         this._handleDeleteButtonClick(this);
     });
 
-    this._element.querySelector('.elements__icon-favorite').addEventListener('click', () => {
+    this._favoriteEl.addEventListener('click', () => {
       if(this._isMyLike()) {
-        this._nandleDislikeButtonClick(this);
+        this._handleDislikeButtonClick(this);
       } else {
-        this._nandleLikeButtonClick(this);
+        this._handleLikeButtonClick(this);
       }
     });
   } 
@@ -98,14 +104,16 @@ export default class Card {
   generateCard() {
     this._element = this._getTemplate();
     this._getIconeRemove();
-    this._setEventListeners();
-    // метод generateCard наполняет данными только ту разметку, которая нужна в шаблоне.
-    this._element.querySelector('.elements__card-image').src = this._link;
-    this._element.querySelector('.elements__card-image').alt = this._name;
-    this._element.querySelector('.elements__heading').textContent = this._name;
     this._likeNumber = this._element.querySelector('.elements__like-number');
+    this._favoriteEl = this._element.querySelector('.elements__icon-favorite');
+    this._setEventListeners();
+    this._imageCardEl = this._element.querySelector('.elements__card-image');
+    this._imageCardEl.src = this._link;
+    this._imageCardEl.alt = this._name;
+    this._element.querySelector('.elements__heading').textContent = this._name;
+    this._updateLikesView();
     this._cardLikeNumber();
-   
+    
     return this._element;
   }
 

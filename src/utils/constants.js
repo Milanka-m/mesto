@@ -44,3 +44,4 @@ export const validationConfig = {
   inputErrorClass: 'popup__form-input-type-error', 
   errorClass: 'popup__form-input-error_active' 
 }; 
+

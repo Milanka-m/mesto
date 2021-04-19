@@ -5,6 +5,7 @@ export default class PopupWithForm extends Popup {
     this._formSubmitHandler = formSubmitHandler;
     this._formEl = this._popup.querySelector('.popup__form');
     this._inputList = Array.from(this._formEl.querySelectorAll('.popup__form-input'));
+    this._buttonElement = this._formEl.querySelector('.popup__form-button');
   }
 
   // приватный метод, который собирает данные всех полей формы
@@ -19,6 +20,14 @@ export default class PopupWithForm extends Popup {
     this._formEl.reset();
     super.close();
   }
+
+  buttonLoading(isLoading) {
+    if (isLoading) {
+      this._buttonElement.textContent = 'Сохранение...';
+    } else {
+      this._buttonElement.textContent = 'Сохранить';
+    }
+  } 
 
   // публичный метод, который добавляет слушатели клика и сабмита формы
   setEventListeners() {

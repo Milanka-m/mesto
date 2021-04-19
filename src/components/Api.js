@@ -137,6 +137,12 @@ export default class Api {
         avatar: data.link
       })
     })
+      .then((response) => { 
+        if(response.ok) { 
+          return response.json(); 
+       } 
+       return Promise.reject(`Ощибка ${response.status}`); 
+      }); 
   }
 
 }

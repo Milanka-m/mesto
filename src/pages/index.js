@@ -19,15 +19,17 @@ import { popupProfile,
   popupRemoveCards,
   cardSelector, 
   validationConfig } from "../utils/constants.js";
+
+import { buttonLoadingSubmit } from "../utils/utils.js";
   
-import Card from "../components/Card.js"
+import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 import PopupWithFormSubmit from "../components/PopupWithFormSubmit.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
-import Api from "../components/Api.js"
+import Api from "../components/Api.js";
 
 const api = new Api({
   address: 'https://mesto.nomoreparties.co',
@@ -90,25 +92,15 @@ const cardsList = new Section({
 // создаем экземпляр класса UserInfo
 const userInfo = new UserInfo({ avatarSelector: profileAvatar, nameSelector: profileTitle, aboutSelector: profileSubtitle });
 
-api.getUsers()
-  .then((users) => {
-    console.log(users);
+Promise.all([api.getUsers(), api.getCards()])
+  .then(([users, cards]) => {
     userInfo.setUserInfo(users);
     userInfo.setUserAvatar(users);
     currentUserId = users._id;
-  })
-  .catch((err) => {
-    console.log(err);
-  })
-
-// если ответ положительный, получаем с сервера карточки, которые появляются при загрузке страницы
-api.getCards()
-  .then((cards) => {
-    console.log(cards);
     cardsList.renderItems(cards);
   })
   .catch((err) => {
-    console.log(err);
+    console.log(err)
   })
 
 // создаем экземпляр класса PopupWithFormSubmit
@@ -136,7 +128,7 @@ function handleCardClick(link, name) {
 
 // создаем экземпляр класса PopupWithForm
 const profilePopup = new PopupWithForm(popupProfile, (data) => {
-  profilePopup.buttonLoading(true);
+  buttonLoadingSubmit(popupProfile, true);
   api.editUser(data)
     .then(() => {
       userInfo.setUserInfo(data);
@@ -146,14 +138,14 @@ const profilePopup = new PopupWithForm(popupProfile, (data) => {
       console.log(err);
     })
     .finally(() => {
-      profilePopup.buttonLoading(false);
+      buttonLoadingSubmit(popupProfile, false);
     })
 });
 profilePopup.setEventListeners();
 
 // создаем экземпляр класса PopupWithForm для редактирования аватара
 const avatarPopup = new PopupWithForm(popupAvatar, (data) => {
-  avatarPopup.buttonLoading(true);
+  buttonLoadingSubmit(popupAvatar, true);
   api.editAvatar(data)
     .then(() => {
       const avatarInfo = userInfo.getAvatarInfo(data);
@@ -164,7 +156,7 @@ const avatarPopup = new PopupWithForm(popupAvatar, (data) => {
       console.log(err);
     })
     .finally(() => {
-      avatarPopup.buttonLoading(false);
+      buttonLoadingSubmit(popupAvatar, false);
     })
 });
 avatarPopup.setEventListeners();
@@ -177,7 +169,7 @@ const cardPopup = new PopupWithForm(popupCard, (data) => {
     link: inputLinkCard, 
     name: inputNameCard 
   }  
-  cardPopup.buttonLoading(true);
+  buttonLoadingSubmit(popupCard, true);
   api.addCard(newCard)
     .then((newCard) => {
       const cardImage = createCard(newCard);
@@ -187,9 +179,9 @@ const cardPopup = new PopupWithForm(popupCard, (data) => {
     .catch((err) => {
       console.log(err);
     })
-     .finally(() => {
-      cardPopup.buttonLoading(false);
-    }) 
+    .finally(() => {
+      buttonLoadingSubmit(popupCard, false);
+    })  
 });
 cardPopup.setEventListeners();
 

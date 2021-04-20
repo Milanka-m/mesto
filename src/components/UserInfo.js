@@ -19,8 +19,10 @@ export default class UserInfo {
 
   // публичный метод, который принимает новые данные пользователя и добавляет их на страницу
   setUserInfo(data) {
-    if(data.name, data.about) {
+    if (data.name) {
       this._nameSelector.textContent = data.name;
+    }
+    if (data.about) {
       this._aboutSelector.textContent = data.about;
     }
   } 

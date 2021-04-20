@@ -11,7 +11,6 @@ export default class Card {
     this._handleDislikeButtonClick = handleDislikeButtonClick;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
-    /* this._iconFavoriteElement = this._element.querySelector('.elements__icon-favorite') */
   }
   // приватный метод клонирования template контейнера
   _getTemplate() {
@@ -62,11 +61,9 @@ export default class Card {
   _updateLikesView() {
     if(this._isMyLike()) {
       this._addActiveLike();
-     /*  likeLenght += 1; */
       this._cardLikeNumber();
     } else {
       this._removeActiveLike();
-      /* likeLenght -= 1; */
       this._cardLikeNumber();
     }
   } 
@@ -74,7 +71,6 @@ export default class Card {
   updateLikes(data) {
     this._likesCount = data.likes;
     this._updateLikesView();
-    /* return this._likesCount.length; */
   } 
  
   // приватный метод обработки событий

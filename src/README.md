@@ -34,7 +34,7 @@
 * Перейдите в созданную директорию
    ##### cd dev
 * Клонируйте репозиторий в созданную директорию
-   ##### git clone https://github.com/Milanka-m/how-to-learn.git
+   ##### git clone https://github.com/Milanka-m/mesto.git
 * Откройте проект в любом редакторе кода
 
 ### Команды:

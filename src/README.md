@@ -6,7 +6,7 @@
 
 -------
 ### Стек: 
-JavaScript, HTML5, CSS3, Node.js, Webpack, Git, БЭМ
+JavaScript, HTML5, CSS3, Node.js, Webpack, Git, API, БЭМ
 
 -------
 ### Используемые технологии:

@@ -5,9 +5,13 @@
 [Ссылка на проект в GitHub Pages](https://milanka-m.github.io/mesto/)
 
 -------
-### Стек: 
-JavaScript, HTML5, CSS3, Node.js, Webpack, Git, API, БЭМ
-
+### Стек:
+* HTML5, CSS3;
+* Java Script;
+* Node.js;
+* React.js;
+* API;
+* БЭМ
 -------
 ### Системные требования:
 * `Интегрированная среда разработки (IDE): VS Code, Notepad++ или др., на Ваше усмотрение`

@@ -6,9 +6,9 @@
 
 -------
 ### Стек:
-* HTML5, CSS3;
-* Java Script;
-* API;
+* HTML5, CSS3
+* Java Script
+* API
 * БЭМ
 -------
 ### Системные требования:
